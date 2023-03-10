@@ -22,8 +22,40 @@ function App() {
   const [gameStage, setGameStage] = useState(stages[0].name)
   const [words] = useState(wordsList)
 
+  const [pickedWord, setPickedWord] = useState("")
+  const [pickedCategory, setPickedCategory] = useState("")
+  const [letters, setLetters] = useState([])
+
+  const pickWordAndCategory = () => {
+    //PICK A RANDOM CATEGORY
+    const categories = Object.keys(words)
+    const category = categories[Math.floor(Math.random() * Object.keys(categories).length)]
+    //console.log(category)
+
+    //PICK A RANDOM WORD
+    const word = words[category][Math.floor(Math.random() * words[category].length)]
+    //console.log(word)
+
+    return {word, category}
+  }
+
   //STARTS  THE SECRET WORD GAME
   const startGame = () => {
+    //pick word and pick category
+    const {word, category} = pickWordAndCategory()
+
+    //create an array of letters
+     let wordLetters = word.split("")
+     wordLetters = wordLetters.map((l) => l.toLowerCase())
+
+     //states
+     setPickedWord(word)
+     setPickedCategory(category)
+     setLetters(letters)
+
+    console.log(word, category)
+    console.log(wordLetters)
+
     setGameStage(stages[1].name)
   }
 
