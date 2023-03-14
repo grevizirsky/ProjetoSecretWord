@@ -19,6 +19,7 @@ const stages = [
 ]
 
 function App() {
+  //HOOKS
   const [gameStage, setGameStage] = useState(stages[0].name)
   const [words] = useState(wordsList)
 
@@ -30,6 +31,7 @@ function App() {
   const [wrongLetters, setWrongLetters] = useState([])//LETRAS ERRADAS
   const [guesses, setGuesses] = useState(3)//TENTATIVAS
   const [score, setScore] = useState(0)//PONTUACAO
+
 
   const pickWordAndCategory = () => {
     //PICK A RANDOM CATEGORY
@@ -66,8 +68,29 @@ function App() {
 
   //PROCESS THE LETTER INPUT
   const verifyLetter = (letter) => {
-    console.log(letter)
+    
+    const normalizedLetter = letter.toLowerCase()
+
+    //checked if letter has already been used
+    if(guessedLetters.includes(normalizedLetter) || wrongLetters.includes(normalizedLetter)){
+      return
+    }
+
+    //push guessed letter or remove a guess
+    if(letters.includes(normalizedLetter)){
+      setGuessedLetters((actualGuessedLetters) => [
+        ...actualGuessedLetters, 
+        normalizedLetter
+      ])
+    } else {
+      setWrongLetters((actualWrongLetters) => [
+        ...actualWrongLetters, 
+        normalizedLetter
+      ])
+    }
   }
+  console.log(guessedLetters)
+  console.log(wrongLetters)
 
   //RESTART THE GAME
   const retry = () => {
