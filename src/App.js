@@ -18,6 +18,8 @@ const stages = [
   {id: 3, name: 'end'}
 ]
 
+ const guessesQty = 3
+
 function App() {
   //HOOKS
   const [gameStage, setGameStage] = useState(stages[0].name)
@@ -29,7 +31,7 @@ function App() {
 
   const [guessedLetters, setGuessedLetters] = useState([])//LETRAS CHUTADAS
   const [wrongLetters, setWrongLetters] = useState([])//LETRAS ERRADAS
-  const [guesses, setGuesses] = useState(3)//TENTATIVAS
+  const [guesses, setGuesses] = useState(guessesQty)//TENTATIVAS
   const [score, setScore] = useState(0)//PONTUACAO
 
 
@@ -87,13 +89,29 @@ function App() {
         ...actualWrongLetters, 
         normalizedLetter
       ])
+
+      setGuesses((actualGuesses) => actualGuesses - 1)
     }
   }
-  console.log(guessedLetters)
-  console.log(wrongLetters)
+  
+  const clearLetterStates = () => {
+    setGuessedLetters([])
+    setWrongLetters([])
+  }
+
+  useEffect(() => {
+    if(guesses <= 0){
+      //RESET ALL STATES
+      clearLetterStates()
+      setGameStage(stages[2].name)
+    }
+  }, [guesses])
 
   //RESTART THE GAME
   const retry = () => {
+    setScore(0)
+    setGuesses(guessesQty)
+
     setGameStage(stages[0].name)
   }
 
